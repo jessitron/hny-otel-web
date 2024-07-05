@@ -8,4 +8,4 @@ npm run build
 # we should make sure that package.json is committed
 release_title="v$(cat package.json | jq -r .version)"
 
-gh release create -n "export otel.trace" --title $release_title --prerelease $release_title dist/otel.js*
+gh release create -n "what does this do" --title $release_title --prerelease $release_title dist/hny.js*

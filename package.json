@@ -23,7 +23,7 @@
       "source": [
         "src/hny.js"
       ],
-      "sourceMap": true
+      "sourceMap": false
     }
   },
   "author": "Jessica Kerr <jessitron@honeycomb.io>",

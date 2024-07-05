@@ -2,7 +2,6 @@ import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
 import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web";
 import { trace } from "@opentelemetry/api";
 
-console.log("Helly from Hny.js");
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
 ) {
@@ -19,10 +18,6 @@ function initializeTracing(
       "No service name provided to initializeTracing. Defaulting to unknown_service"
     );
     params.serviceName = "unknown_service";
-  }
-  console.log("Params", params);
-  if (params.debug) {
-    console.log("Debug mode, my favorite!");
   }
 
   const configDefaults = {
@@ -45,7 +40,6 @@ function initializeTracing(
     ],
     ...params,
   });
-  console.log("starting SDK...");
   sdk.start();
 
   instrumentGlobalErrors();
@@ -74,7 +68,6 @@ function instrumentGlobalErrors() {
 }
 
 function sendTestSpan() {
-  console.log("Time to send the test span!");
   const span = trace.getTracer("test span").startSpan("test span");
   console.log("Sending test span", span.spanContext());
   span.end();
