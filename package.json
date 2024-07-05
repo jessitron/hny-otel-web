@@ -1,5 +1,5 @@
 {
-  "name": "@jessitron/min-otel",
+  "name": "@jessitronica/hny-otel-web",
   "version": "0.2.0",
   "description": "can i make a package and publish it and use it from html",
   "source": "src/index.html",
@@ -27,7 +27,7 @@
     }
   },
   "author": "Jessica Kerr <jessitron@honeycomb.io>",
-  "homepage": "https://github.com/jessitron/min-otel",
+  "homepage": "https://github.com/jessitron/hny-otel-web",
   "license": "ISC",
   "dependencies": {
     "@honeycombio/opentelemetry-web": "^0.4.0",
