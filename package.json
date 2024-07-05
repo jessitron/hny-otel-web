@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "can i make a package and publish it and use it from html",
   "source": "src/index.html",
-  "main": "dist/otel.js",
+  "main": "dist/hny.js",
   "files": [
     "README.md",
     "src/*"
@@ -21,7 +21,7 @@
       "outputFormat": "global",
       "isLibrary": false,
       "source": [
-        "src/otel.js"
+        "src/hny.js"
       ],
       "sourceMap": false
     }
@@ -30,13 +30,8 @@
   "homepage": "https://github.com/jessitron/min-otel",
   "license": "ISC",
   "dependencies": {
-    "@opentelemetry/context-zone": "^1.18.1",
-    "@opentelemetry/exporter-trace-otlp-proto": "^0.45.1",
-    "@opentelemetry/instrumentation": "^0.45.1",
-    "@opentelemetry/instrumentation-document-load": "^0.34.0",
-    "@opentelemetry/resources": "^1.18.1",
-    "@opentelemetry/sdk-trace-web": "^1.18.1",
-    "@opentelemetry/semantic-conventions": "^1.18.1"
+    "@honeycombio/opentelemetry-web": "^0.4.0",
+    "@opentelemetry/auto-instrumentations-web": "^0.40.0"
   },
   "devDependencies": {
     "http-server": "^14.1.1",

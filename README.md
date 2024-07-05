@@ -1,4 +1,4 @@
-# My minimal OpenTelemetry-for-the-browser distribution
+# My minimal wrapper around Honeycomb's SDK
 
 Currently (November 2023), OpenTelemetry doesn't offer a single .js file that I can import in a script tag.
 
@@ -12,33 +12,27 @@ I don't recommend using this; instead, I recommend copying it and making your ow
 
 ## Use
 
-`<script href=https://github.com/jessitron/min-otel/releases/download/v0.0.3/otel.js"></script>`
+```html
+<script href=https://github.com/jessitron/hny-otel-web/releases/download/v0.2.0/hny.js"></script>
+<script>window.Hny({debug: true, apiKey: "your-honeycomb-ingest-api-key", serviceName: "my-app"})</script>
+```
 
-(where v0.0.3 is the current prerelease)
+(where v0.2.0 is the current prerelease)
 
-This adds an object `Otel` to the global `window`. Use it in your other JavaScript.
+This wrapper follows the [Honeycomb docs](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution/) as of now.
+(It's July 5th 2024)
 
-|global| use |
-|------|-----|
-|`Otel.initializeTracing()`|Call this first. It configures OpenTelemetry to send spans over HTTP with Protobuf to a local collector, at port 4318, endpoint `/v1/traces`.|
-|`Otel.sendTestSpan()`|Look for a span named "test span" to see whether tracing works|
-|`Otel.trace`|The `trace` object from `@opentelemetry/api`. Call `getTracer("custom library.name")` to make your own spans|
-|`Otel.instrumentGlobalErrors()`| Listen for errors on the window, and send a span when it happens.|
-
-
-This little wrapper follows [OpenTelemetry's browser instructions](https://opentelemetry.io/docs/instrumentation/js/getting-started/browser/). It doesn't add any automatic instrumentation.
-
-Currently this results in a binary under half a meg.
+Currently this results in a binary of some size.
 
 ### examples
 
-See [otel.js](https://github.com/jessitron/min-otel/blob/main/src/otel.js) for the code.
+See [hny.js](https://github.com/jessitron/hny-otel-web/blob/main/src/hny.js) for the code.
 
-See [index.html](https://github.com/jessitron/min-otel/blob/main/src/index.html) for an example of use; but you'll change the script tag that brings it in, because that one expects `otel.js` locally.
+See [index.html](https://github.com/jessitron/hny-otel-web/blob/main/src/index.html) for an example of use; but you'll change the script tag that brings it in, because that one expects `otel.js` locally.
 
 ## Development
 
-Change something in otel.js,`npm install`, and `npm run build`. This builds a parcel target defined in `package.json`. The output goes to `dist/otel.js`. 
+Change something in otel.js,`npm install`, and `npm run build`. This builds a parcel target defined in `package.json`. The output goes to `dist/hny.js`.
 
 To test, change `index.html` and then run `npm run futz` to copy it to dist and serve it. Load the page, and then check the dev tools. Network tab should show hits to `/v1/traces`.
 
@@ -54,4 +48,4 @@ Start Docker.
 
 ## notes
 
-Why GitHub releases? Because password reset on npmjs.com is not working. 
+Why GitHub releases? Because password reset on npmjs.com is not working.

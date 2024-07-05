@@ -2,14 +2,14 @@
   <head>
     <meta charset="utf-8" />
     <title>My First Parcel App</title>
-    <script src="otel.js"></script>
+    <script src="hny.js"></script>
     <script>
       console.log("I am the script yo");
-      Otel.initializeTracing({ serviceName: "min-otel" });
-      Otel.sendTestSpan();
-      Otel.instrumentGlobalErrors();
-      Otel.inSpan("another test span", (span) => {
-        Otel.setAttributes({ "test attribute": "boogers" });
+      Hny({
+        apiKey:
+          "hcaik_01j229z3ezkranjdcgj7e5dvx4vz4prbbkkbgx4rnv4strm0kb485sae9f",
+        serviceName: "min-otel",
+        debug: true,
       });
     </script>
     <script>
