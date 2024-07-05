@@ -1,6 +1,8 @@
 import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
 import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web";
+import { trace } from "@opentelemetry/api";
 
+console.log("Helly from Hny.js");
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
 ) {
@@ -18,6 +20,10 @@ function initializeTracing(
     );
     params.serviceName = "unknown_service";
   }
+  console.log("Params", params);
+  if (params.debug) {
+    console.log("Debug mode, my favorite!");
+  }
 
   const configDefaults = {
     ignoreNetworkEvents: true,
@@ -28,7 +34,7 @@ function initializeTracing(
 
   const sdk = new HoneycombWebSDK({
     // endpoint: "https://api.eu1.honeycomb.io/v1/traces", // Send to EU instance of Honeycomb. Defaults to sending to US instance.
-    debug: true, // Set to false for production environment.
+    localVisualizations: params.debug,
     instrumentations: [
       getWebAutoInstrumentations({
         // Loads custom configuration for xml-http-request instrumentation.
@@ -39,6 +45,7 @@ function initializeTracing(
     ],
     ...params,
   });
+  console.log("starting SDK...");
   sdk.start();
 
   instrumentGlobalErrors();
@@ -67,6 +74,7 @@ function instrumentGlobalErrors() {
 }
 
 function sendTestSpan() {
+  console.log("Time to send the test span!");
   const span = trace.getTracer("test span").startSpan("test span");
   console.log("Sending test span", span.spanContext());
   span.end();
