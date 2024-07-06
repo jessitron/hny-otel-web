@@ -101,7 +101,7 @@ async function inSpanAsync(tracerName, spanName, fn) {
       return await fn();
     } catch (err) {
       span.setStatus({
-        code: trace.SpanStatusCode.ERROR,
+        code: 2, // trace.SpanStatusCode.ERROR,
         message: err.message,
       });
       span.recordException(err);
