@@ -84,7 +84,7 @@ function inSpan(tracerName, spanName, fn) {
       return fn();
     } catch (err) {
       span.setStatus({
-        code: trace.SpanStatusCode.ERROR,
+        code: 2, //SpanStatusCode.ERROR,
         message: err.message,
       });
       span.recordException(err);
