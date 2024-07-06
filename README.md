@@ -14,7 +14,7 @@ I don't recommend using this; instead, I recommend copying it and making your ow
 
 ```html
 <script href=https://github.com/jessitron/hny-otel-web/releases/download/v0.2.0/hny.js"></script>
-<script>window.Hny({debug: true, apiKey: "your-honeycomb-ingest-api-key", serviceName: "my-app"})</script>
+<script>window.Hny.initializeTracing({debug: true, apiKey: "your-honeycomb-ingest-api-key", serviceName: "my-app"})</script>
 ```
 
 (where v0.2.0 is the current prerelease)
