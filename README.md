@@ -17,12 +17,14 @@ I don't recommend using this; instead, I recommend copying it and making your ow
 <script>window.Hny.initializeTracing({debug: true, apiKey: "your-honeycomb-ingest-api-key", serviceName: "my-app"})</script>
 ```
 
+or from unpkg, the relevant include is: https://unpkg.com/@jessitronica/hny-otel-web@0.5.0/dist/hny.js
+
 (where v0.2.0 is the current prerelease)
 
 This wrapper follows the [Honeycomb docs](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution/) as of now.
 (It's July 5th 2024)
 
-Currently this results in a binary of some size.
+Currently this results in a binary of almost 200k.
 
 ### examples
 
