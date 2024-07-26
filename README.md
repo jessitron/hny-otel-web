@@ -13,7 +13,7 @@ I don't recommend using this; instead, I recommend copying it and making your ow
 ## Use
 
 ```html
-<script href=https://unpkg.com/@jessitronica/hny-otel-web@0.6.0/dist/hny.js"></script>
+<script src="https://unpkg.com/@jessitronica/hny-otel-web@0.6.0/dist/hny.js"></script>
 <script>window.Hny.initializeTracing({debug: true, apiKey: "your-honeycomb-ingest-api-key", serviceName: "my-app"})</script>
 ```
 
