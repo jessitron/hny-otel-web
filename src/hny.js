@@ -129,6 +129,11 @@ async function recordException(err) {
   span.recordException(err);
 }
 
+async function addSpanEvent(message, attributes) {
+  const span = trace.getActiveSpan();
+  span.addEvent(message, attributes);
+}
+
 /* I'm exporting 'trace' here, but I have a feeling some of the functionality on it is stripped off.
  * getActiveSpan() was missing, when I tried to use that outside of this project, while this project was not
  * using it.
@@ -140,6 +145,7 @@ export const Hny = {
   inSpan,
   inSpanAsync,
   recordException,
+  addSpanEvent,
 };
 // Now for the REAL export
 window.Hny = Hny;

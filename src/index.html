@@ -23,6 +23,7 @@
       console.log("Just doing something in a span");
       Hny.inSpan("test-tracer", "this is a span", () => {
         console.log("I am in a span");
+        Hny.addSpanEvent("this is an event");
       });
     </script>
 
