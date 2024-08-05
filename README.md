@@ -30,7 +30,7 @@ Currently this results in a binary of almost 200k.
 
 See [hny.js](https://github.com/jessitron/hny-otel-web/blob/main/src/hny.js) for the code.
 
-See [index.html](https://github.com/jessitron/hny-otel-web/blob/main/src/index.html) for an example of use; but you'll change the script tag that brings it in, because that one expects `otel.js` locally.
+See [index.html](https://github.com/jessitron/hny-otel-web/blob/main/src/index.html) for an example of use; but you'll change the script tag that brings it in, because that one expects `hny.js` locally.
 
 ## Development
 

@@ -79,6 +79,9 @@ function setAttributes(attributes) {
 }
 
 function inSpan(tracerName, spanName, fn) {
+  if (fn === undefined) {
+    console.log("USAGE: inSpan(tracerName, spanName, () => { ... })");
+  }
   return trace.getTracer(tracerName).startActiveSpan(spanName, (span) => {
     try {
       return fn();
@@ -96,6 +99,11 @@ function inSpan(tracerName, spanName, fn) {
 }
 
 async function inSpanAsync(tracerName, spanName, fn) {
+  if (fn === undefined) {
+    console.log(
+      "USAGE: inSpanAsync(tracerName, spanName, async () => { ... })"
+    );
+  }
   return trace.getTracer(tracerName).startActiveSpan(spanName, async (span) => {
     try {
       return await fn();
@@ -112,11 +120,26 @@ async function inSpanAsync(tracerName, spanName, fn) {
   });
 }
 
+async function recordException(err) {
+  const span = trace.getActiveSpan();
+  span.setStatus({
+    code: 2, // SpanStatusCode.ERROR,
+    message: err.message,
+  });
+  span.recordException(err);
+}
+
 /* I'm exporting 'trace' here, but I have a feeling some of the functionality on it is stripped off.
  * getActiveSpan() was missing, when I tried to use that outside of this project, while this project was not
  * using it.
  * Someday, don't export 'trace' because it is a lie. Or do, but document which parts of TraceAPI are gonna be on it.
  */
-export const Hny = { initializeTracing, setAttributes, inSpan, inSpanAsync };
+export const Hny = {
+  initializeTracing,
+  setAttributes,
+  inSpan,
+  inSpanAsync,
+  recordException,
+};
 // Now for the REAL export
 window.Hny = Hny;

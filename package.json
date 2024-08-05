@@ -1,6 +1,6 @@
 {
   "name": "@jessitronica/hny-otel-web",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "can i make a package and publish it and use it from html",
   "source": "src/index.html",
   "main": "dist/hny.js",
@@ -12,6 +12,7 @@
     "watch": "parcel watch",
     "serve": "parcel serve",
     "build": "parcel build --target dammit",
+    "clean": "rm -r .parcel-cache dist",
     "futz": "npm run build && cp src/index.html dist && http-server dist"
   },
   "targets": {

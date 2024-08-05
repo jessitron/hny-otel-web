@@ -4,6 +4,9 @@
     <title>My First Parcel App</title>
     <script src="hny.js"></script>
     <script>
+      console.log("What do we have here? ", Hny);
+    </script>
+    <script>
       console.log("I am the script yo");
       Hny.initializeTracing({
         apiKey:
@@ -15,6 +18,26 @@
     <script>
       console.log("Throwing an error to test that it will send a span...");
       throw new Error("Pirates!!");
+    </script>
+    <script>
+      console.log("Just doing something in a span");
+      Hny.inSpan("test-tracer", "this is a span", () => {
+        console.log("I am in a span");
+      });
+    </script>
+
+    <script>
+      console.log("Catching an error to put it on a span");
+      Hny.inSpan("test-tracer", "catching-error", () => {
+        try {
+          console.log("now to throw the error");
+          Hny.setAttributes({ sneaky: "pirates" });
+          throw new Error("Sneaky Pirates!!");
+        } catch (e) {
+          console.log("I caught the error");
+          Hny.recordException(e);
+        }
+      });
     </script>
   </head>
   <body>
