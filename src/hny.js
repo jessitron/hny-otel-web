@@ -48,6 +48,7 @@ function initializeTracing(
     sendTestSpan();
   }
 
+  // TODO: add the version of this library. Can i get parcel to import a json file?
   console.log("Tracing initialized");
 }
 
@@ -75,7 +76,7 @@ function sendTestSpan() {
 
 function setAttributes(attributes) {
   const span = trace.getActiveSpan();
-  span.setAttributes(attributes);
+  span && span.setAttributes(attributes); // maybe there is no active span, nbd
 }
 
 function inSpan(tracerName, spanName, fn) {
