@@ -12,6 +12,7 @@
     "watch": "parcel watch",
     "serve": "parcel serve",
     "build": "parcel build --target dammit",
+    "build-fat": "parcel build --no-optimize --target dammit",
     "clean": "rm -r .parcel-cache dist",
     "futz": "npm run build && cp src/index.html dist && http-server dist"
   },
