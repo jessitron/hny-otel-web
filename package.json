@@ -1,6 +1,6 @@
 {
   "name": "@jessitronica/hny-otel-web",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "can i make a package and publish it and use it from html",
   "source": "src/index.html",
   "main": "dist/hny.js",
@@ -32,9 +32,9 @@
   "homepage": "https://github.com/jessitron/hny-otel-web",
   "license": "ISC",
   "dependencies": {
-    "@honeycombio/opentelemetry-web": "^0.4.0",
+    "@honeycombio/opentelemetry-web": "^0.7.0",
     "@opentelemetry/api": "^1.9.0",
-    "@opentelemetry/auto-instrumentations-web": "^0.40.0"
+    "@opentelemetry/auto-instrumentations-web": "^0.41.0"
   },
   "devDependencies": {
     "http-server": "^14.1.1",

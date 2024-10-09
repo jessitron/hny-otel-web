@@ -48,6 +48,3 @@ Start Docker.
 
 `./run-collector`
 
-## notes
-
-Why GitHub releases? Because password reset on npmjs.com is not working.
