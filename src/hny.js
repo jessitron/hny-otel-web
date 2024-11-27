@@ -72,23 +72,7 @@ function initializeTracing(
   }
 
   // TODO: add the version of this library. Can i get parcel to import a json file?
-  console.log("Tracing initialized");
-}
-
-function instrumentGlobalErrors() {
-  const tracer = trace.getTracer("@jessitron/errors");
-  window.addEventListener("error", (e) => {
-    const span = tracer.startSpan("Error on page");
-    span.setAttributes({
-      error: true,
-      "error.message": e.message,
-      "error.stack": e.error?.stack,
-      "error.filename": e.filename,
-      "error.line_number": e.lineno,
-      "error.column_number": e.colno,
-    });
-    span.end();
-  });
+  console.log("Tracing initialized, v0.10.0 at last update of this message");
 }
 
 function sendTestSpan() {
