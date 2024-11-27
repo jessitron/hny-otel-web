@@ -54,9 +54,11 @@ function initializeTracing(
         "@opentelemetry/instrumentation-xml-http-request": configDefaults,
         "@opentelemetry/instrumentation-fetch": configDefaults,
         "@opentelemetry/instrumentation-document-load": {
-          applyCustomAttributesOnSpan: addContentLengthToSpan,
+          applyCustomAttributesOnSpan: {
+            resourceFetch: addContentLengthToSpan,
+          },
           ...configDefaults,
-        }
+        },
       }),
     ],
     ...params,
