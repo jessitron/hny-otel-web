@@ -65,8 +65,6 @@ function initializeTracing(
   });
   sdk.start();
 
-  instrumentGlobalErrors();
-
   if (params.debug) {
     sendTestSpan();
   }
