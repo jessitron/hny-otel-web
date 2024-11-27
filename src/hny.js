@@ -20,6 +20,24 @@ function initializeTracing(
     params.serviceName = "unknown_service";
   }
 
+  function addContentLengthToSpan(span, resource) {
+    // this works for document-load.
+    const encodedLength = resource.encodedBodySize;
+
+    if (encodedLength !== undefined) {
+      span.setAttribute("http.request_content_length", encodedLength); // SEMATTRS_HTTP_REQUEST_CONTENT_LENGTH
+    }
+
+    const decodedLength = resource.decodedBodySize;
+
+    if (decodedLength !== undefined && encodedLength !== decodedLength) {
+      span.setAttribute(
+        "http.response_content_length_uncompressed", //SEMATTRS_HTTP_RESPONSE_CONTENT_LENGTH_UNCOMPRESSED,
+        decodedLength
+      );
+    }
+  }
+
   const configDefaults = {
     ignoreNetworkEvents: true,
     // propagateTraceHeaderCorsUrls: [
@@ -35,7 +53,10 @@ function initializeTracing(
         // Loads custom configuration for xml-http-request instrumentation.
         "@opentelemetry/instrumentation-xml-http-request": configDefaults,
         "@opentelemetry/instrumentation-fetch": configDefaults,
-        "@opentelemetry/instrumentation-document-load": configDefaults,
+        "@opentelemetry/instrumentation-document-load": {
+          applyCustomAttributesOnSpan: addContentLengthToSpan,
+          ...configDefaults,
+        }
       }),
     ],
     ...params,
