@@ -4,11 +4,12 @@ Currently (November 2023), OpenTelemetry doesn't offer a single .js file that I 
 
 I want this so that my toy app can send spans to Honeycomb to tell me that someone hit the page, and when some JS threw an error.
 
-This repository constructs a .js file, wrapping the OpenTelemetry libraries, using Parcel to bundle the necessary code up. It publishes the .js as a GitHub release.
+This repository constructs a .js file, wrapping the OpenTelemetry libraries, using Parcel to bundle the necessary code up.
 
 ## Make your own distribution
 
 I don't recommend using this; instead, I recommend copying it and making your own tiny distribution that does what you want and nothing else.
+This one is very optimized for debugging.
 
 ## Use
 
@@ -24,9 +25,9 @@ I don't recommend using this; instead, I recommend copying it and making your ow
 ```
 
 This wrapper follows the [Honeycomb docs](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution/) as of now.
-(It's July 5th 2024)
+(It's November 2024)
 
-Currently this results in a binary of almost 200k.
+Currently this results in a binary of almost 200k. It isn't even compressed 
 
 ### examples
 
