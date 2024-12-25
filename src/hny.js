@@ -2,7 +2,7 @@ import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
 import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web";
 import { trace } from "@opentelemetry/api";
 
-const MY_VERSION = "0.10.2";
+const MY_VERSION = "0.10.3";
 
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
@@ -78,9 +78,10 @@ function initializeTracing(
 }
 
 function sendTestSpan() {
-  const span = trace
-    .getTracer({ name: "hny-otel-web test", version: MY_VERSION })
-    .startSpan("test span");
+  const span = getTracer({
+    name: "hny-otel-web test",
+    version: MY_VERSION,
+  }).startSpan("test span");
   console.log("Sending test span", span.spanContext());
   span.end();
 }
