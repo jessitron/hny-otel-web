@@ -2,6 +2,8 @@ import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
 import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web";
 import { trace } from "@opentelemetry/api";
 
+const MY_VERSION = "0.10.2";
+
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
 ) {
@@ -69,12 +71,16 @@ function initializeTracing(
     sendTestSpan();
   }
 
-  // TODO: add the version of this library. Can i get parcel to import a json file?
-  console.log("Tracing initialized, v0.10.0 at last update of this message");
+  // TODO: Can i get parcel to import a json file?
+  console.log(
+    `Tracing initialized, ${MY_VERSION} at last update of this message`
+  );
 }
 
 function sendTestSpan() {
-  const span = trace.getTracer("test span").startSpan("test span");
+  const span = trace
+    .getTracer({ name: "hny-otel-web test", version: MY_VERSION })
+    .startSpan("test span");
   console.log("Sending test span", span.spanContext());
   span.end();
 }
@@ -84,13 +90,24 @@ function setAttributes(attributes) {
   span && span.setAttributes(attributes); // maybe there is no active span, nbd
 }
 
-function inSpan(tracerName, spanName, fn) {
+function getTracer(inputTracer) {
+  let tracerName, tracerVersion;
+  if (typeof inputTracer === "string") {
+    tracerName = inputTracer;
+  } else {
+    tracerName = inputTracer.name || "missing tracer name";
+    tracerVersion = inputTracer.version;
+  }
+  return trace.getTracer(tracerName, tracerVersion);
+}
+
+function inSpan(inputTracer, spanName, fn) {
   if (fn === undefined) {
     console.log("USAGE: inSpan(tracerName, spanName, () => { ... })");
   }
-  return trace.getTracer(tracerName).startActiveSpan(spanName, (span) => {
+  return getTracer(inputTracer).startActiveSpan(spanName, (span) => {
     try {
-      return fn();
+      return fn(span);
     } catch (err) {
       span.setStatus({
         code: 2, //SpanStatusCode.ERROR,
@@ -104,15 +121,15 @@ function inSpan(tracerName, spanName, fn) {
   });
 }
 
-async function inSpanAsync(tracerName, spanName, fn) {
+async function inSpanAsync(inputTracer, spanName, fn) {
   if (fn === undefined) {
     console.log(
       "USAGE: inSpanAsync(tracerName, spanName, async () => { ... })"
     );
   }
-  return trace.getTracer(tracerName).startActiveSpan(spanName, async (span) => {
+  return getTracer(inputTracer).startActiveSpan(spanName, async (span) => {
     try {
-      return await fn();
+      return await fn(span);
     } catch (err) {
       span.setStatus({
         code: 2, // trace.SpanStatusCode.ERROR,

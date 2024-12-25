@@ -1,6 +1,6 @@
 {
   "name": "@jessitronica/hny-otel-web",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "can i make a package and publish it and use it from html",
   "source": "src/index.html",
   "main": "dist/hny.js",
