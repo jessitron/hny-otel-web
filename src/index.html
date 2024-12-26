@@ -40,6 +40,23 @@
         }
       });
     </script>
+
+    <script>
+      console.log("Running something in a span that we saved from earlier");
+      const span1 = Hny.inSpan(
+        "test-tracer",
+        "propagation parent",
+        (span) => span
+      );
+      console.log("  Parent span context: ", span1.spanContext());
+      const span2 = Hny.inChildSpan(
+        "test-tracer",
+        "propagation child",
+        span1,
+        (span) => span
+      );
+      console.log("  Child span context: ", span2.spanContext());
+    </script>
   </head>
   <body>
     <h1>Hello, World! eh?</h1>

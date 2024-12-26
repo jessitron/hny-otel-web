@@ -197,6 +197,14 @@ function addSpanEvent(message, attributes) {
   span.addEvent(message, attributes);
 }
 
+function inChildSpan(inputTracer, spanName, parentSpan, fn) {
+  if (!parentSpan || !parentSpan.spanContext) {
+    console.log("inChildSpan: I need a span as my third argument");
+  }
+
+  return inSpan(inputTracer, spanName, fn);
+}
+
 /* I'm exporting 'trace' here, but I have a feeling some of the functionality on it is stripped off.
  * getActiveSpan() was missing, when I tried to use that outside of this project, while this project was not
  * using it.
@@ -209,7 +217,8 @@ export const Hny = {
   inSpanAsync,
   recordException,
   addSpanEvent,
-  activeContext,
+  activeContext, // I'm not using this, could deprecate
+  inChildSpan,
 };
 // Now for the REAL export
 window.Hny = Hny;
