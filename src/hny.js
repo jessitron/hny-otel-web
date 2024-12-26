@@ -163,7 +163,7 @@ async function inSpanAsync(inputTracer, spanName, fn, context) {
   );
 }
 
-async function recordException(exception, additionalAttributes) {
+function recordException(exception, additionalAttributes) {
   const span = trace.getActiveSpan();
 
   // I took this from the sdk-trace-base, except I'm gonna support additional attributes.
@@ -192,7 +192,7 @@ async function recordException(exception, additionalAttributes) {
   });
 }
 
-async function addSpanEvent(message, attributes) {
+function addSpanEvent(message, attributes) {
   const span = trace.getActiveSpan();
   span.addEvent(message, attributes);
 }
