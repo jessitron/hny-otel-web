@@ -1,8 +1,8 @@
 import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
 import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web";
-import { trace } from "@opentelemetry/api";
+import { trace, context } from "@opentelemetry/api";
 
-const MY_VERSION = "0.10.3";
+const MY_VERSION = "0.10.5";
 
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
@@ -86,6 +86,10 @@ function sendTestSpan() {
   span.end();
 }
 
+function activeContext() {
+  return context.active();
+}
+
 function setAttributes(attributes) {
   const span = trace.getActiveSpan();
   span && span.setAttributes(attributes); // maybe there is no active span, nbd
@@ -102,46 +106,56 @@ function getTracer(inputTracer) {
   return trace.getTracer(tracerName, tracerVersion);
 }
 
-function inSpan(inputTracer, spanName, fn) {
+function inSpan(inputTracer, spanName, fn, context) {
   if (fn === undefined) {
     console.log("USAGE: inSpan(tracerName, spanName, () => { ... })");
   }
-  return getTracer(inputTracer).startActiveSpan(spanName, (span) => {
-    try {
-      return fn(span);
-    } catch (err) {
-      span.setStatus({
-        code: 2, //SpanStatusCode.ERROR,
-        message: err.message,
-      });
-      span.recordException(err);
-      throw err;
-    } finally {
-      span.end();
+  return getTracer(inputTracer).startActiveSpan(
+    spanName,
+    {},
+    context,
+    (span) => {
+      try {
+        return fn(span);
+      } catch (err) {
+        span.setStatus({
+          code: 2, //SpanStatusCode.ERROR,
+          message: err.message,
+        });
+        span.recordException(err);
+        throw err;
+      } finally {
+        span.end();
+      }
     }
-  });
+  );
 }
 
-async function inSpanAsync(inputTracer, spanName, fn) {
+async function inSpanAsync(inputTracer, spanName, fn, context) {
   if (fn === undefined) {
     console.log(
       "USAGE: inSpanAsync(tracerName, spanName, async () => { ... })"
     );
   }
-  return getTracer(inputTracer).startActiveSpan(spanName, async (span) => {
-    try {
-      return await fn(span);
-    } catch (err) {
-      span.setStatus({
-        code: 2, // trace.SpanStatusCode.ERROR,
-        message: err.message,
-      });
-      span.recordException(err);
-      throw err;
-    } finally {
-      span.end();
+  return getTracer(inputTracer).startActiveSpan(
+    spanName,
+    {},
+    context,
+    async (span) => {
+      try {
+        return await fn(span);
+      } catch (err) {
+        span.setStatus({
+          code: 2, // trace.SpanStatusCode.ERROR,
+          message: err.message,
+        });
+        span.recordException(err);
+        throw err;
+      } finally {
+        span.end();
+      }
     }
-  });
+  );
 }
 
 async function recordException(err) {
@@ -150,7 +164,35 @@ async function recordException(err) {
     code: 2, // SpanStatusCode.ERROR,
     message: err.message,
   });
-  span.recordException(err);
+  // I took this from the sdk-trace-base, except I'm gonna support additional attributes
+  // https://github.com/open-telemetry/opentelemetry-js/blob/90afa2850c0690f7a18ecc511c04927a3183490b/packages/opentelemetry-sdk-trace-base/src/Span.ts#L321
+    const attributes: Attributes = {};
+    if (typeof exception === 'string') {
+      attributes[SEMATTRS_EXCEPTION_MESSAGE] = exception;
+    } else if (exception) {
+      if (exception.code) {
+        attributes[SEMATTRS_EXCEPTION_TYPE] = exception.code.toString();
+      } else if (exception.name) {
+        attributes[SEMATTRS_EXCEPTION_TYPE] = exception.name;
+      }
+      if (exception.message) {
+        attributes[SEMATTRS_EXCEPTION_MESSAGE] = exception.message;
+      }
+      if (exception.stack) {
+        attributes[SEMATTRS_EXCEPTION_STACKTRACE] = exception.stack;
+      }
+    }
+
+    // these are minimum requirements from spec
+    if (
+      attributes[SEMATTRS_EXCEPTION_TYPE] ||
+      attributes[SEMATTRS_EXCEPTION_MESSAGE]
+    ) {
+      this.addEvent(ExceptionEventName, attributes, time);
+    } else {
+      diag.warn(`Failed to record an exception ${exception}`);
+    }
+  }
 }
 
 async function addSpanEvent(message, attributes) {
@@ -170,6 +212,7 @@ export const Hny = {
   inSpanAsync,
   recordException,
   addSpanEvent,
+  activeContext,
 };
 // Now for the REAL export
 window.Hny = Hny;
