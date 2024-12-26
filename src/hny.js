@@ -2,7 +2,7 @@ import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
 import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web";
 import { trace, context } from "@opentelemetry/api";
 
-const MY_VERSION = "0.10.7";
+const MY_VERSION = "0.10.9";
 
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
@@ -160,10 +160,7 @@ async function inSpanAsync(inputTracer, spanName, fn, context) {
 
 async function recordException(err, additionalAttributes) {
   const span = trace.getActiveSpan();
-  span.setStatus({
-    code: 2, // SpanStatusCode.ERROR,
-    message: err.message,
-  });
+
   // I took this from the sdk-trace-base, except I'm gonna support additional attributes.
   // https://github.com/open-telemetry/opentelemetry-js/blob/90afa2850c0690f7a18ecc511c04927a3183490b/packages/opentelemetry-sdk-trace-base/src/Span.ts#L321
   const attributes = {};
@@ -184,6 +181,10 @@ async function recordException(err, additionalAttributes) {
   }
   const allAttributes = { ...attributes, ...additionalAttributes };
   span.addEvent(ExceptionEventName, allAttributes);
+  span.setStatus({
+    code: 2, // SpanStatusCode.ERROR,
+    message: attributes[SEMATTRS_EXCEPTION_MESSAGE],
+  });
 }
 
 async function addSpanEvent(message, attributes) {
