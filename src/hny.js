@@ -202,7 +202,14 @@ function inChildSpan(inputTracer, spanName, parentSpan, fn) {
     console.log("inChildSpan: I need a span as my third argument");
   }
 
-  return inSpan(inputTracer, spanName, fn);
+  const usefulContext = trace.setSpanContext(
+    context.active(),
+    parentSpan.spanContext()
+  );
+
+  console.log("the new context has", usefulContext);
+
+  return inSpan(inputTracer, spanName, fn, usefulContext);
 }
 
 /* I'm exporting 'trace' here, but I have a feeling some of the functionality on it is stripped off.
