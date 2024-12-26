@@ -1,8 +1,13 @@
 import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
 import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web";
 import { trace, context } from "@opentelemetry/api";
+import {
+  ATTR_EXCEPTION_MESSAGE,
+  ATTR_EXCEPTION_STACKTRACE,
+  ATTR_EXCEPTION_TYPE,
+} from "@opentelemetry/semantic-conventions";
 
-const MY_VERSION = "0.10.9";
+const MY_VERSION = "0.10.12";
 
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
@@ -158,32 +163,32 @@ async function inSpanAsync(inputTracer, spanName, fn, context) {
   );
 }
 
-async function recordException(err, additionalAttributes) {
+async function recordException(exception, additionalAttributes) {
   const span = trace.getActiveSpan();
 
   // I took this from the sdk-trace-base, except I'm gonna support additional attributes.
   // https://github.com/open-telemetry/opentelemetry-js/blob/90afa2850c0690f7a18ecc511c04927a3183490b/packages/opentelemetry-sdk-trace-base/src/Span.ts#L321
   const attributes = {};
   if (typeof exception === "string") {
-    attributes[SEMATTRS_EXCEPTION_MESSAGE] = exception;
+    attributes[ATTR_EXCEPTION_MESSAGE] = exception;
   } else if (exception) {
     if (exception.code) {
-      attributes[SEMATTRS_EXCEPTION_TYPE] = exception.code.toString();
+      attributes[ATTR_EXCEPTION_TYPE] = exception.code.toString();
     } else if (exception.name) {
-      attributes[SEMATTRS_EXCEPTION_TYPE] = exception.name;
+      attributes[ATTR_EXCEPTION_TYPE] = exception.name;
     }
     if (exception.message) {
-      attributes[SEMATTRS_EXCEPTION_MESSAGE] = exception.message;
+      attributes[ATTR_EXCEPTION_MESSAGE] = exception.message;
     }
     if (exception.stack) {
-      attributes[SEMATTRS_EXCEPTION_STACKTRACE] = exception.stack;
+      attributes[ATTR_EXCEPTION_STACKTRACE] = exception.stack;
     }
   }
   const allAttributes = { ...attributes, ...additionalAttributes };
-  span.addEvent(ExceptionEventName, allAttributes);
+  span.addEvent("exception", allAttributes);
   span.setStatus({
     code: 2, // SpanStatusCode.ERROR,
-    message: attributes[SEMATTRS_EXCEPTION_MESSAGE],
+    message: attributes[ATTR_EXCEPTION_MESSAGE],
   });
 }
 
