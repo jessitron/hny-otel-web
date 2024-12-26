@@ -2,7 +2,7 @@ import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
 import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web";
 import { trace, context } from "@opentelemetry/api";
 
-const MY_VERSION = "0.10.5";
+const MY_VERSION = "0.10.7";
 
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
@@ -158,41 +158,32 @@ async function inSpanAsync(inputTracer, spanName, fn, context) {
   );
 }
 
-async function recordException(err) {
+async function recordException(err, additionalAttributes) {
   const span = trace.getActiveSpan();
   span.setStatus({
     code: 2, // SpanStatusCode.ERROR,
     message: err.message,
   });
-  // I took this from the sdk-trace-base, except I'm gonna support additional attributes
+  // I took this from the sdk-trace-base, except I'm gonna support additional attributes.
   // https://github.com/open-telemetry/opentelemetry-js/blob/90afa2850c0690f7a18ecc511c04927a3183490b/packages/opentelemetry-sdk-trace-base/src/Span.ts#L321
-    const attributes: Attributes = {};
-    if (typeof exception === 'string') {
-      attributes[SEMATTRS_EXCEPTION_MESSAGE] = exception;
-    } else if (exception) {
-      if (exception.code) {
-        attributes[SEMATTRS_EXCEPTION_TYPE] = exception.code.toString();
-      } else if (exception.name) {
-        attributes[SEMATTRS_EXCEPTION_TYPE] = exception.name;
-      }
-      if (exception.message) {
-        attributes[SEMATTRS_EXCEPTION_MESSAGE] = exception.message;
-      }
-      if (exception.stack) {
-        attributes[SEMATTRS_EXCEPTION_STACKTRACE] = exception.stack;
-      }
+  const attributes = {};
+  if (typeof exception === "string") {
+    attributes[SEMATTRS_EXCEPTION_MESSAGE] = exception;
+  } else if (exception) {
+    if (exception.code) {
+      attributes[SEMATTRS_EXCEPTION_TYPE] = exception.code.toString();
+    } else if (exception.name) {
+      attributes[SEMATTRS_EXCEPTION_TYPE] = exception.name;
     }
-
-    // these are minimum requirements from spec
-    if (
-      attributes[SEMATTRS_EXCEPTION_TYPE] ||
-      attributes[SEMATTRS_EXCEPTION_MESSAGE]
-    ) {
-      this.addEvent(ExceptionEventName, attributes, time);
-    } else {
-      diag.warn(`Failed to record an exception ${exception}`);
+    if (exception.message) {
+      attributes[SEMATTRS_EXCEPTION_MESSAGE] = exception.message;
+    }
+    if (exception.stack) {
+      attributes[SEMATTRS_EXCEPTION_STACKTRACE] = exception.stack;
     }
   }
+  const allAttributes = { ...attributes, ...additionalAttributes };
+  span.addEvent(ExceptionEventName, allAttributes);
 }
 
 async function addSpanEvent(message, attributes) {
