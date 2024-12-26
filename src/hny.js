@@ -7,7 +7,7 @@ import {
   ATTR_EXCEPTION_TYPE,
 } from "@opentelemetry/semantic-conventions";
 
-const MY_VERSION = "0.10.12";
+const MY_VERSION = "0.10.14";
 
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
@@ -198,7 +198,12 @@ function addSpanEvent(message, attributes) {
 }
 
 function inChildSpan(inputTracer, spanName, spanContext, fn) {
-  if (!spanContext || !spanContext.spanId) {
+  if (
+    !spanContext ||
+    !spanContext.spanId ||
+    !spanContext.traceId ||
+    spanContext.traceFlags === undefined
+  ) {
     console.log("inChildSpan: I need a SpanContext as my third argument");
   }
 
