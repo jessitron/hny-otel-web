@@ -11,7 +11,7 @@
   "scripts": {
     "watch": "parcel watch",
     "serve": "parcel serve",
-    "build": "parcel build --target dammit",
+    "build": "parcel build --target dammit --no-optimize",
     "dist": "parcel build --target dammit",
     "build-fat": "parcel build --no-optimize --target dammit",
     "clean": "rm -r .parcel-cache dist",

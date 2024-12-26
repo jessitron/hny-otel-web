@@ -52,7 +52,7 @@
       const span2 = Hny.inChildSpan(
         "test-tracer",
         "propagation child",
-        span1,
+        span1.spanContext(),
         (span) => span
       );
       console.log("  Child span context: ", span2.spanContext());

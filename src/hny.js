@@ -197,15 +197,12 @@ function addSpanEvent(message, attributes) {
   span.addEvent(message, attributes);
 }
 
-function inChildSpan(inputTracer, spanName, parentSpan, fn) {
-  if (!parentSpan || !parentSpan.spanContext) {
-    console.log("inChildSpan: I need a span as my third argument");
+function inChildSpan(inputTracer, spanName, spanContext, fn) {
+  if (!spanContext || !spanContext.spanId) {
+    console.log("inChildSpan: I need a SpanContext as my third argument");
   }
 
-  const usefulContext = trace.setSpanContext(
-    context.active(),
-    parentSpan.spanContext()
-  );
+  const usefulContext = trace.setSpanContext(context.active(), spanContext);
 
   console.log("the new context has", usefulContext);
 
