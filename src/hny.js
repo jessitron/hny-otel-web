@@ -7,7 +7,7 @@ import {
   ATTR_EXCEPTION_TYPE,
 } from "@opentelemetry/semantic-conventions";
 
-const MY_VERSION = "0.10.14";
+const MY_VERSION = "0.10.18";
 
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
@@ -112,13 +112,13 @@ function getTracer(inputTracer) {
 }
 
 function inSpan(inputTracer, spanName, fn, context) {
-  if (fn === undefined) {
-    console.log("USAGE: inSpan(tracerName, spanName, () => { ... })");
+  if (fn === undefined || typeof fn !== "function") {
+    throw new Error("USAGE: inSpan(tracerName, spanName, () => { ... })");
   }
   return getTracer(inputTracer).startActiveSpan(
     spanName,
     {},
-    context,
+    context || null,
     (span) => {
       try {
         return fn(span);
