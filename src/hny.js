@@ -7,7 +7,7 @@ import {
   ATTR_EXCEPTION_TYPE,
 } from "@opentelemetry/semantic-conventions";
 
-const MY_VERSION = "0.10.18";
+const MY_VERSION = "0.10.28";
 
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
@@ -74,6 +74,20 @@ function initializeTracing(
 
   if (params.debug) {
     sendTestSpan();
+  }
+
+  if (params.provideOneLinkToHoneycomb) {
+    const tracesEndpoint = params.endpoint || "https://api.honeycomb.io";
+    const apiOrigin = new URL(tracesEndpoint).origin;
+    const authEndpoint = apiOrigin + "/1/auth";
+    const uiOrigin = apiOrigin.replace("api", "ui");
+    const datasetSlug = params.serviceName || "unknown_service";
+    fetch(authEndpoint, { headers: { "X-Honeycomb-Team": params.apiKey } })
+      .then((result) => result.json())
+      .then((data) => {
+        const datasetQueryUrl = `${uiOrigin}/${data.team.slug}/environments/${data.environment.slug}/datasets/${datasetSlug}`;
+        console.log(`Query your traces: ${datasetQueryUrl}`);
+      });
   }
 
   // TODO: Can i get parcel to import a json file?
