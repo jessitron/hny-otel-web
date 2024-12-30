@@ -7,7 +7,7 @@ import {
   ATTR_EXCEPTION_TYPE,
 } from "@opentelemetry/semantic-conventions";
 
-const MY_VERSION = "0.10.28";
+const MY_VERSION = "0.10.29";
 
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
@@ -92,7 +92,7 @@ function initializeTracing(
 
   // TODO: Can i get parcel to import a json file?
   console.log(
-    `Tracing initialized, ${MY_VERSION} at last update of this message`
+    `Hny-otel-web tracing initialized, ${MY_VERSION} at last update of this message`
   );
 }
 
