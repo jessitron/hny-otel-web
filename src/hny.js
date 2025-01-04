@@ -7,7 +7,7 @@ import {
   ATTR_EXCEPTION_TYPE,
 } from "@opentelemetry/semantic-conventions";
 
-const MY_VERSION = "0.10.29";
+const MY_VERSION = "0.10.34";
 
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
@@ -105,8 +105,8 @@ function sendTestSpan() {
   span.end();
 }
 
-function activeContext() {
-  return context.active();
+function activeSpanContext() {
+  return trace.getActiveSpan()?.spanContext();
 }
 
 function setAttributes(attributes) {
@@ -208,22 +208,24 @@ function recordException(exception, additionalAttributes) {
 
 function addSpanEvent(message, attributes) {
   const span = trace.getActiveSpan();
-  span.addEvent(message, attributes);
+  span?.addEvent(message, attributes);
 }
 
 function inChildSpan(inputTracer, spanName, spanContext, fn) {
   if (
-    !spanContext ||
-    !spanContext.spanId ||
-    !spanContext.traceId ||
-    spanContext.traceFlags === undefined
+    !!spanContext &&
+    (!spanContext.spanId ||
+      !spanContext.traceId ||
+      spanContext.traceFlags === undefined)
   ) {
-    console.log("inChildSpan: I need a SpanContext as my third argument");
+    console.log(
+      "inChildSpan: the third argument should be a spanContext (or undefined to use the active context)"
+    );
   }
 
-  const usefulContext = trace.setSpanContext(context.active(), spanContext);
-
-  console.log("the new context has", usefulContext);
+  const usefulContext = !!spanContext
+    ? trace.setSpanContext(context.active(), spanContext)
+    : context.active();
 
   return inSpan(inputTracer, spanName, fn, usefulContext);
 }
@@ -240,7 +242,7 @@ export const Hny = {
   inSpanAsync,
   recordException,
   addSpanEvent,
-  activeContext, // I'm not using this, could deprecate
+  activeSpanContext,
   inChildSpan,
 };
 // Now for the REAL export
