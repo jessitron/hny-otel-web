@@ -7,7 +7,7 @@ import {
   ATTR_EXCEPTION_TYPE,
 } from "@opentelemetry/semantic-conventions";
 
-const MY_VERSION = "0.10.34";
+const MY_VERSION = "0.10.35";
 
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */
@@ -179,6 +179,9 @@ async function inSpanAsync(inputTracer, spanName, fn, context) {
 
 function recordException(exception, additionalAttributes) {
   const span = trace.getActiveSpan();
+  if (!span) {
+    return;
+  }
 
   // I took this from the sdk-trace-base, except I'm gonna support additional attributes.
   // https://github.com/open-telemetry/opentelemetry-js/blob/90afa2850c0690f7a18ecc511c04927a3183490b/packages/opentelemetry-sdk-trace-base/src/Span.ts#L321
