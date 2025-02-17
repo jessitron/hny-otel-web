@@ -9,25 +9,11 @@
     "src/*"
   ],
   "scripts": {
-    "watch": "parcel watch",
-    "serve": "parcel serve",
-    "build": "parcel build --target dammit --no-optimize",
-    "dist": "parcel build --target dammit",
-    "build-fat": "parcel build --no-optimize --target dammit",
-    "clean": "rm -r .parcel-cache dist",
+    "esbuild": "esbuild src/hny.js --bundle --format=iife --platform=browser",
+    "build": "npm run esbuild -- --outfile=dist/hny.js",
+    "dist": "npm run esbuild -- --outfile=dist/hny.min.js --minify",
+    "watch": "npm run esbuild -- --outfile=dist/hny.js --watch",
     "futz": "npm run build && cp src/index.html dist && http-server dist"
-  },
-  "targets": {
-    "dammit": {
-      "includeNodeModules": true,
-      "context": "browser",
-      "outputFormat": "global",
-      "isLibrary": false,
-      "source": [
-        "src/hny.js"
-      ],
-      "sourceMap": false
-    }
   },
   "author": "Jessica Kerr <jessitron@honeycomb.io>",
   "homepage": "https://github.com/jessitron/hny-otel-web",
@@ -38,8 +24,8 @@
     "@opentelemetry/auto-instrumentations-web": "^0.45.0"
   },
   "devDependencies": {
+    "esbuild": "^0.25.0",
     "http-server": "^14.1.1",
-    "parcel": "^2.13.3",
     "process": "^0.11.10"
   }
 }
