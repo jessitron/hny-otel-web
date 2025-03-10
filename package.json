@@ -1,12 +1,14 @@
 {
   "name": "@jessitronica/hny-otel-web",
-  "version": "0.10.36",
+  "version": "0.10.37",
   "description": "can i make a package and publish it and use it from html",
   "source": "src/index.html",
   "main": "dist/hny.js",
   "files": [
     "README.md",
-    "src/*"
+    "src/*",
+    "dist/hny.js",
+    "dist/hny.min.js"
   ],
   "scripts": {
     "esbuild": "esbuild src/hny.js --bundle --format=iife --platform=browser",

@@ -14,7 +14,7 @@ This one is very optimized for debugging.
 ## Use
 
 ```html
-<script src="https://unpkg.com/@jessitronica/hny-otel-web@0.10.35/dist/hny.min.js"></script>
+<script src="https://unpkg.com/@jessitronica/hny-otel-web@0.10.37/dist/hny.min.js"></script>
 <script>
   window.Hny.initializeTracing({
     debug: true,
