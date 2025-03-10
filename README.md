@@ -14,7 +14,7 @@ This one is very optimized for debugging.
 ## Use
 
 ```html
-<script src="https://unpkg.com/@jessitronica/hny-otel-web@0.10.1/dist/hny.js"></script>
+<script src="https://unpkg.com/@jessitronica/hny-otel-web@0.10.35/dist/hny.min.js"></script>
 <script>
   window.Hny.initializeTracing({
     debug: true,
@@ -27,7 +27,7 @@ This one is very optimized for debugging.
 This wrapper follows the [Honeycomb docs](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution/) as of now.
 (It's November 2024)
 
-Currently this results in a binary of almost 200k. It isn't even compressed 
+Currently this results in a binary of almost 200k. It isn't even compressed
 
 ### examples
 
