@@ -17,9 +17,10 @@ This one is very optimized for debugging.
 <script src="https://unpkg.com/@jessitronica/hny-otel-web@0.10.37/dist/hny.min.js"></script>
 <script>
   window.Hny.initializeTracing({
-    debug: true,
+    debug: false,
     apiKey: "your-honeycomb-ingest-api-key",
     serviceName: "my-app",
+    provideOneLinkToHoneycomb: true,
   });
 </script>
 ```
