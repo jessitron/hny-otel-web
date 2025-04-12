@@ -110,6 +110,7 @@ Returns the context of the currently active span, if any.
 
 ```javascript
 const context = Hny.activeSpanContext();
+// Object { traceId: "412d3ebf30d017fa0ff993677f261b63", spanId: "13dde362233fa22d", traceFlags: 1, traceState: undefined }
 ```
 
 ### inChildSpan(tracerName, spanName, parentContext, fn)
