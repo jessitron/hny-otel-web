@@ -7,7 +7,7 @@ import {
   ATTR_EXCEPTION_TYPE,
 } from "@opentelemetry/semantic-conventions";
 
-const MY_VERSION = "0.10.36";
+const MY_VERSION = "0.10.38";
 
 function initializeTracing(
   params /* { apiKey: string, serviceName: string } */

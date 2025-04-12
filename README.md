@@ -14,7 +14,7 @@ This one is very optimized for debugging.
 ## Use
 
 ```html
-<script src="https://unpkg.com/@jessitronica/hny-otel-web@0.10.37/dist/hny.min.js"></script>
+<script src="https://unpkg.com/@jessitronica/hny-otel-web@0.10.38/dist/hny.min.js"></script>
 <script>
   window.Hny.initializeTracing({
     debug: false,
@@ -128,7 +128,6 @@ Hny.inChildSpan("tracer", "child-operation", parentSpan.spanContext(), () => {
 See [hny.js](https://github.com/jessitron/hny-otel-web/blob/main/src/hny.js) for the code.
 
 See [index.html](https://github.com/jessitron/hny-otel-web/blob/main/src/index.html) for an example of use; but you'll change the script tag that brings it in, because that one expects `hny.js` locally.
-
 
 ## Development
 
