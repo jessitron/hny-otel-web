@@ -219,6 +219,8 @@ function inChildSpan(inputTracer, spanName, spanContext, fn) {
     console.log(
       "inChildSpan: the third argument should be a spanContext (or undefined to use the active context)"
     );
+    fn = spanContext;
+    spanContext = fn;
   }
 
   const usefulContext = !!spanContext
