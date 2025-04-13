@@ -9,8 +9,7 @@
     <script>
       console.log("I am the script yo");
       Hny.initializeTracing({
-        apiKey:
-          "hcaik_01j229z3ezkranjdcgj7e5dvx4vz4prbbkkbgx4rnv4strm0kb485sae9f",
+        apiKey: "hcaik_01j229z3ezkranjdcgj7e5dvx4vz4prbbkkbgx4rnv4strm0kb485sae9f",
         serviceName: "hny-otel-web-test",
         debug: true,
       });
@@ -43,19 +42,19 @@
 
     <script>
       console.log("Running something in a span that we saved from earlier");
-      const span1 = Hny.inSpan(
-        "test-tracer",
-        "propagation parent",
-        (span) => span
-      );
+      const span1 = Hny.inSpan("test-tracer", "propagation parent", (span) => span);
       console.log("  Parent span context: ", span1.spanContext());
-      const span2 = Hny.inChildSpan(
-        "test-tracer",
-        "propagation child",
-        span1.spanContext(),
-        (span) => span
-      );
+      const span2 = Hny.inChildSpan("test-tracer", "propagation child", span1.spanContext(), (span) => span);
       console.log("  Child span context: ", span2.spanContext());
+    </script>
+    <script>
+      console.log("Sending a request to localhost. I don't expect this to work, but you can check whether traceheaders were included.");
+      try {
+        fetch("http://127.0.0.1:8080/test");
+      } catch (e) {
+        console.log("I caught the error");
+        Hny.recordException(e);
+      }
     </script>
   </head>
   <body>

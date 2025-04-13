@@ -1,29 +1,19 @@
 import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
 import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web";
 import { trace, context } from "@opentelemetry/api";
-import {
-  ATTR_EXCEPTION_MESSAGE,
-  ATTR_EXCEPTION_STACKTRACE,
-  ATTR_EXCEPTION_TYPE,
-} from "@opentelemetry/semantic-conventions";
+import { ATTR_EXCEPTION_MESSAGE, ATTR_EXCEPTION_STACKTRACE, ATTR_EXCEPTION_TYPE } from "@opentelemetry/semantic-conventions";
 
-const MY_VERSION = "0.10.39";
+const MY_VERSION = "0.10.40";
 
-function initializeTracing(
-  params /* { apiKey: string, serviceName: string } */
-) {
+function initializeTracing(params /* { apiKey: string, serviceName: string } */) {
   if (!params) {
     params = {};
   }
   if (!params.apiKey) {
-    throw new Error(
-      "Usage: initializeTracing({ apiKey: 'honeycomb api key', serviceName: 'name of this service' })"
-    );
+    throw new Error("Usage: initializeTracing({ apiKey: 'honeycomb api key', serviceName: 'name of this service' })");
   }
   if (!params.serviceName) {
-    console.log(
-      "No service name provided to initializeTracing. Defaulting to unknown_service"
-    );
+    console.log("No service name provided to initializeTracing. Defaulting to unknown_service");
     params.serviceName = "unknown_service";
   }
 
@@ -47,9 +37,7 @@ function initializeTracing(
 
   const configDefaults = {
     ignoreNetworkEvents: true,
-    // propagateTraceHeaderCorsUrls: [
-    // /.+/g, // Regex to match your backend URLs. Update to the domains you wish to include.
-    // ]
+    propagateTraceHeaderCorsUrls: [/localhost/, /jessitron/, /127\.0\.0\.1/],
   };
 
   const sdk = new HoneycombWebSDK({
@@ -91,9 +79,7 @@ function initializeTracing(
   }
 
   // TODO: Can i get parcel to import a json file?
-  console.log(
-    `Hny-otel-web tracing initialized, ${MY_VERSION} at last update of this message`
-  );
+  console.log(`Hny-otel-web tracing initialized, ${MY_VERSION} at last update of this message`);
 }
 
 function sendTestSpan() {
@@ -129,52 +115,40 @@ function inSpan(inputTracer, spanName, fn, context) {
   if (fn === undefined || typeof fn !== "function") {
     throw new Error("USAGE: inSpan(tracerName, spanName, () => { ... })");
   }
-  return getTracer(inputTracer).startActiveSpan(
-    spanName,
-    {},
-    context || null,
-    (span) => {
-      try {
-        return fn(span);
-      } catch (err) {
-        span.setStatus({
-          code: 2, //SpanStatusCode.ERROR,
-          message: err.message,
-        });
-        span.recordException(err);
-        throw err;
-      } finally {
-        span.end();
-      }
+  return getTracer(inputTracer).startActiveSpan(spanName, {}, context || null, (span) => {
+    try {
+      return fn(span);
+    } catch (err) {
+      span.setStatus({
+        code: 2, //SpanStatusCode.ERROR,
+        message: err.message,
+      });
+      span.recordException(err);
+      throw err;
+    } finally {
+      span.end();
     }
-  );
+  });
 }
 
 async function inSpanAsync(inputTracer, spanName, fn, context) {
   if (fn === undefined) {
-    console.log(
-      "USAGE: inSpanAsync(tracerName, spanName, async () => { ... })"
-    );
+    console.log("USAGE: inSpanAsync(tracerName, spanName, async () => { ... })");
   }
-  return getTracer(inputTracer).startActiveSpan(
-    spanName,
-    {},
-    context,
-    async (span) => {
-      try {
-        return await fn(span);
-      } catch (err) {
-        span.setStatus({
-          code: 2, // trace.SpanStatusCode.ERROR,
-          message: err.message,
-        });
-        span.recordException(err);
-        throw err;
-      } finally {
-        span.end();
-      }
+  return getTracer(inputTracer).startActiveSpan(spanName, {}, context, async (span) => {
+    try {
+      return await fn(span);
+    } catch (err) {
+      span.setStatus({
+        code: 2, // trace.SpanStatusCode.ERROR,
+        message: err.message,
+      });
+      span.recordException(err);
+      throw err;
+    } finally {
+      span.end();
     }
-  );
+  });
 }
 
 function recordException(exception, additionalAttributes) {
@@ -216,16 +190,12 @@ function addSpanEvent(message, attributes) {
 
 function inChildSpan(inputTracer, spanName, spanContext, fn) {
   if (!!spanContext && (!spanContext.spanId || !spanContext.traceId)) {
-    console.log(
-      "inChildSpan: the third argument should be a spanContext (or undefined to use the active context)"
-    );
+    console.log("inChildSpan: the third argument should be a spanContext (or undefined to use the active context)");
     fn = spanContext;
     spanContext = fn;
   }
 
-  const usefulContext = !!spanContext
-    ? trace.setSpanContext(context.active(), spanContext)
-    : context.active();
+  const usefulContext = !!spanContext ? trace.setSpanContext(context.active(), spanContext) : context.active();
 
   return inSpan(inputTracer, spanName, fn, usefulContext);
 }
