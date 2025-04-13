@@ -215,12 +215,7 @@ function addSpanEvent(message, attributes) {
 }
 
 function inChildSpan(inputTracer, spanName, spanContext, fn) {
-  if (
-    !!spanContext &&
-    (!spanContext.spanId ||
-      !spanContext.traceId ||
-      spanContext.traceFlags === undefined)
-  ) {
+  if (!!spanContext || !spanContext.spanId || !spanContext.traceId) {
     console.log(
       "inChildSpan: the third argument should be a spanContext (or undefined to use the active context)"
     );
