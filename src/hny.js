@@ -131,11 +131,11 @@ function inSpan(inputTracer, spanName, fn, context) {
   });
 }
 
-async function inSpanAsync(inputTracer, spanName, fn, context) {
+async function inSpanAsync(inputTracerName, spanName, fn, context) {
   if (fn === undefined) {
     console.log("USAGE: inSpanAsync(tracerName, spanName, async () => { ... })");
   }
-  return getTracer(inputTracer).startActiveSpan(spanName, {}, context, async (span) => {
+  return getTracer(inputTracerName).startActiveSpan(spanName, {}, context, async (span) => {
     try {
       return await fn(span);
     } catch (err) {
