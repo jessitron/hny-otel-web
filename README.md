@@ -140,11 +140,17 @@ which won't work until you run a collector.
 
 ### Run a local collector
 
-Edit `otel-local-config.yaml` and put a Honeycomb API key in the spot.
+Set your Honeycomb API key as an environment variable:
 
-Start Docker.
+```bash
+export HONEYCOMB_API_KEY=your_api_key_here
+```
 
-`./run-collector`
+Start Docker, then run:
+
+```bash
+./run-collector
+```
 
 ### Publish a new version
 

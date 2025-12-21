@@ -1,7 +1,14 @@
-#!/bin/bash 
+#!/bin/bash
+
+if [ -z "$HONEYCOMB_API_KEY" ]; then
+  echo "Error: HONEYCOMB_API_KEY environment variable is not set"
+  echo "Set it with: export HONEYCOMB_API_KEY=your_api_key"
+  exit 1
+fi
 
 docker run \
 -v "${PWD}/otel-local-config.yaml":/otel-local-config.yaml \
+-e HONEYCOMB_API_KEY="${HONEYCOMB_API_KEY}" \
 -p 4318:4318 \
 otel/opentelemetry-collector \
 --config otel-local-config.yaml;
