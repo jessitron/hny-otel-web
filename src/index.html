@@ -9,8 +9,9 @@
     <script>
       console.log("I am the script yo");
       Hny.initializeTracing({
-        apiKey: "hcaik_01j229z3ezkranjdcgj7e5dvx4vz4prbbkkbgx4rnv4strm0kb485sae9f",
+        apiKey: "local-collector-key", // Dummy key - local collector will use its own
         serviceName: "hny-otel-web-test",
+        endpoint: "http://localhost:4318/v1/traces", // Send to local collector
         debug: true,
       });
     </script>
