@@ -299,22 +299,7 @@ COUNT
 
 Set the time range to match when you ran the test, then share the link.
 
-### Query Link Best Practices
-
-When sharing query results:
-- **Set a specific time range** (e.g., "Last 15 minutes" or absolute timestamps) so the link shows the same data
-- **Include the environment** in your message (e.g., "local environment")
-- **Note when you ran the test** so reviewers know what timeframe to expect
-- Consider using the **"Last 1 hour"** time range to capture multiple test runs if iterating
-
-**Example message format:**
-```
-Test results for version 0.X.Y:
-- Environment: local
-- Dataset: hny-otel-web-test
-- Time: 2024-01-15 14:30 UTC
-- Query: [All traces from test run](https://ui.honeycomb.io/...)
-```
+Report the link to the user with some cute ASCII art decoration.
 
 ---
 

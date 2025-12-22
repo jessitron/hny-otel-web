@@ -30,7 +30,29 @@ Before making any changes, verify the current version works:
 npm run futz
 ```
 
-Then open http://127.0.0.1:8081/ and verify traces appear in Honeycomb.
+This starts a local server at http://127.0.0.1:8080 (note: 8080, not 8081).
+
+**Verify traces are working:**
+
+1. Open the test page in a browser:
+   ```bash
+   open http://127.0.0.1:8080
+   ```
+
+2. Check that the local collector received traces:
+   ```bash
+   docker ps  # Verify collector is running
+   docker logs --tail 50 <container-id>  # Look for spans from service.name=hny-otel-web-test
+   ```
+
+   You should see spans including:
+   - Test spans ("this is a span", "catching-error", "propagation parent/child")
+   - Exception tracking ("Pirates!!" error)
+   - Document load instrumentation
+   - Web vitals (FCP, TTFB, LCP)
+   - Resource fetches
+
+3. (Optional) Query Honeycomb directly for the `hny-otel-web-test` dataset to confirm traces arrived
 
 **Why:** Establishes a baseline to compare against after updates.
 

@@ -46,6 +46,13 @@ To check your API key and find your team/environment:
 bash -c 'curl -s -H "X-Honeycomb-Team: $HONEYCOMB_API_KEY" "https://api.honeycomb.io/1/auth"' | jq .
 ```
 
+### Checking traces in Honeycomb
+Use the Honeycomb MCP to view traces. If with the MCP you do not have access to the same team that the API key belongs to, notify the user.
+
+The environment is the one the API key belongs to. The dataset is specified in `index.html` when the library is initialized.
+
+Query that dataset for the last ten minutes for all events. There should be a few dozen.
+
 ### Publishing
 1. Update version in both `package.json` AND `README.md` (version appears in example script tag)
 2. Update `MY_VERSION` constant in `src/hny.js`

@@ -3,7 +3,7 @@ import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations
 import { trace, context } from "@opentelemetry/api";
 import { ATTR_EXCEPTION_MESSAGE, ATTR_EXCEPTION_STACKTRACE, ATTR_EXCEPTION_TYPE } from "@opentelemetry/semantic-conventions";
 
-const MY_VERSION = "0.10.40";
+const MY_VERSION = "0.12.0";
 
 function initializeTracing(params /* { apiKey: string, serviceName: string } */) {
   if (!params) {

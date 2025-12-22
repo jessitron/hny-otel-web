@@ -4,7 +4,7 @@ Currently (November 2023), OpenTelemetry doesn't offer a single .js file that I 
 
 I want this so that my toy app can send spans to Honeycomb to tell me that someone hit the page, and when some JS threw an error.
 
-This repository constructs a .js file, wrapping the OpenTelemetry libraries, using Parcel to bundle the necessary code up.
+This repository constructs a .js file, wrapping the OpenTelemetry libraries, using esbuild to bundle the necessary code up.
 
 ## Make your own distribution
 
@@ -14,7 +14,7 @@ This one is very optimized for debugging.
 ## Use
 
 ```html
-<script src="https://unpkg.com/@jessitronica/hny-otel-web@0.10.40/dist/hny.min.js"></script>
+<script src="https://unpkg.com/@jessitronica/hny-otel-web@0.12.0/dist/hny.min.js"></script>
 <script>
   window.Hny.initializeTracing({
     debug: false,
