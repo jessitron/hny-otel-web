@@ -30,16 +30,12 @@ npm run watch        # Build and watch for changes
 ```
 
 ### Testing Locally
-```bash
-npm run futz         # Build, copy index.html to dist/, and serve with http-server
-```
-After running `futz`, open the served page in a browser and check:
-- Browser DevTools Console for initialization messages
-- Browser DevTools Network tab for `/v1/traces` requests to the collector
+
+See [TESTING.md](TESTING.md) for detailed instructions on testing locally.
 
 ### Running Local Collector
 To capture traces locally:
-1. Set your Honeycomb API key as an environment variable: `export HONEYCOMB_API_KEY=your_api_key_here`
+1. Set your Honeycomb API key as an environment variable: `export HONEYCOMB_API_KEY=your_api_key_here` (the user sets this)
 2. Start Docker
 3. Run `./run-collector`
 4. Test collector with: `curl -i http://localhost:4318/v1/traces -X POST -H "Content-Type: application/json" -d @test-span.json`

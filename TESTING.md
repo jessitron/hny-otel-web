@@ -289,22 +289,11 @@ COUNT
 
 ## Sharing Test Results
 
-After running tests, generate a Honeycomb query link to review all test traces:
-
-### Option 1: Use the Quick Verification Query
-
-1. Run the Quick Verification Query above in Honeycomb
-2. Adjust the time range to cover your test run (e.g., "Last 15 minutes")
-3. Click the **Share** button (or copy the URL from your browser)
-4. Share the link for review
-
-### Option 2: Simple Time-Based Query
-
-Create a basic query that shows all traces from your test session:
+After running tests, generate a Honeycomb query link 
 
 ```
-WHERE service.name = "hny-otel-web-test"
-GROUP BY trace.trace_id
+WHERE 
+GROUP BY trace.trace_id, root.name
 COUNT
 ```
 
