@@ -13,12 +13,12 @@ This guide explains how to test the OpenTelemetry browser tracing functionality 
 
 ### 1. Verify Collector is Running (or Start It)
 
-Check if the collector is already running:
+Check if the collector is accepting connections:
 ```bash
-docker ps | grep otel
+curl -i http://localhost:4318/v1/traces -X POST -H "Content-Type: application/json" -d @test-span.json
 ```
 
-If not running, start it:
+If you get a connection error, start the collector:
 ```bash
 ./run-collector
 ```
@@ -28,20 +28,18 @@ This starts a Docker container running the OpenTelemetry collector that:
 - Forwards traces to Honeycomb
 - Logs traces to stdout (debug exporter)
 
-### 2. Test the Collector
-
-Send a test span to verify the collector is working:
+Then verify it's working:
 ```bash
 curl -i http://localhost:4318/v1/traces -X POST -H "Content-Type: application/json" -d @test-span.json
 ```
 
 You should see a `200 OK` response.
 
-### 3. Verify Test Span in Honeycomb
+### 2. Verify Test Span in Honeycomb
 
 Use the Honeycomb MCP to query for the test span in your dataset. This confirms the collector is forwarding traces to Honeycomb successfully.
 
-### 4. Build and Serve the Test Page
+### 3. Build and Serve the Test Page
 
 ```bash
 npm run futz
@@ -52,7 +50,7 @@ This command:
 - Copies `src/index.html` to `dist/`
 - Starts `http-server` on port 8081
 
-### 5. Load the Test Page
+### 4. Load the Test Page
 
 Open your browser to:
 ```
