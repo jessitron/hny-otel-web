@@ -11,6 +11,16 @@ This guide explains how to test the OpenTelemetry browser tracing functionality 
 
 ## Running the Tests
 
+### 0. Capture Test Start Time
+
+Before beginning, capture the current time to use in all Honeycomb queries:
+
+```bash
+date +%s
+```
+
+Save this epoch timestamp - you'll use it as the `start_time` for all queries to see only traces from this test run.
+
 ### 1. Verify Collector is Running (or Start It)
 
 Check if the collector is accepting connections:
@@ -93,7 +103,7 @@ Additionally, auto-instrumentation automatically captures:
 Use these Honeycomb queries to verify all expected traces are present. All queries should be run against:
 - **Environment:** `local` (or your test environment)
 - **Dataset:** `hny-otel-web-test`
-- **Time Range:** Last 2 hours (or adjust based on when you ran the test)
+- **Time Range:** Use `start_time: <your captured timestamp>` and `time_range: 7200` (2 hours) in all queries
 
 ### ✅ 1. Document Load & Auto-Instrumentation
 
@@ -296,16 +306,24 @@ COUNT
 
 ## Sharing Test Results
 
-After running tests, generate a Honeycomb query link 
+After running tests, generate a Honeycomb query link using the captured start time.
 
-```
-WHERE 
-GROUP BY trace.trace_id, root.name
-COUNT
+Run this query with the Honeycomb MCP:
+
+```json
+{
+  "environment_slug": "local",
+  "dataset_slug": "hny-otel-web-test",
+  "query_spec": {
+    "calculations": [{"op": "COUNT"}],
+    "breakdowns": ["trace.trace_id", "root.name"],
+    "start_time": <your captured timestamp>,
+    "time_range": 7200
+  }
+}
 ```
 
-Set the time range to match when you ran the test, then share the link.
-Run the query with the Honeycomb MCP, and get the link from its response.
+The MCP will return a `query_url` field in the metadata that you can share.
 
 Report the link to the user with some cute ASCII art decoration.
 
