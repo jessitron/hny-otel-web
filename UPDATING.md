@@ -286,6 +286,8 @@ git commit -m "Release version 0.X.Y - claude"
 
 ### 13. Publish to npm
 
+This part requires help from the user.
+
 Publish the new version (requires authentication as `jessitronica`):
 
 ```bash
@@ -363,6 +365,7 @@ npm login  # Login as jessitronica if needed
 
 After publishing:
 
+- [ ] Verify CHANGELOG.md was updated (if this was a code change release, not just dependencies)
 - [ ] Test the published package in a separate project
 - [ ] Verify unpkg.com CDN serves the new version (may take a few minutes)
 - [ ] Update any documentation or examples that reference specific version numbers
