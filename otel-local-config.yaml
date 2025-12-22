@@ -5,10 +5,7 @@ receivers:
         endpoint: "0.0.0.0:4318"
         cors:
           allowed_origins:
-            - "http://127.0.0.1:8080"
-            - "http://localhost:8080"
-            - "http://127.0.0.1:8081"
-            - "http://localhost:8081"
+            - "http://*"
           allowed_headers:
             - "*"
           max_age: 7200
@@ -30,6 +27,10 @@ service:
       level: "info"
   pipelines:
     traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, otlp]
+    logs:
       receivers: [otlp]
       processors: [batch]
       exporters: [debug, otlp]
