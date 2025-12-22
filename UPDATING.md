@@ -89,7 +89,33 @@ Tell the user about them.
 
 ---
 
-### 4. Update Dependencies
+### 4. Verify SDK Initialization Matches Honeycomb Docs
+
+**Check that our initialization pattern still matches the official recommendations:**
+
+1. Visit the Honeycomb documentation:
+   - https://docs.honeycomb.io/send-data/javascript-browser/
+
+2. Compare the documented initialization pattern with `src/hny.js`:
+   - Check imports (e.g., `HoneycombWebSDK`, `WebVitalsInstrumentation`)
+   - Verify instrumentation configuration matches recommendations
+   - Look for new configuration options or best practices
+   - Ensure we're following current patterns for `getWebAutoInstrumentations()`
+
+3. If the docs show different patterns:
+   - Update `src/hny.js` to match the documented approach
+   - Test that the changes work correctly
+   - Document the changes in the commit message
+
+**Example check:**
+- Docs recommend: `instrumentations: [getWebAutoInstrumentations(), new WebVitalsInstrumentation()]`
+- Our code should match this pattern
+
+**Why:** Honeycomb may update their recommended initialization patterns, add new instrumentation options, or change best practices. Staying aligned ensures we follow current recommendations and benefit from improvements.
+
+---
+
+### 5. Update Dependencies
 
 Force update to the latest versions of core dependencies:
 
@@ -103,11 +129,11 @@ Review the changes in `package.json` and `package-lock.json` to confirm versions
 
 ---
 
-### 5. Update Version Numbers (Critical: 3 Locations!)
+### 6. Update Version Numbers (Critical: 3 Locations!)
 
 **IMPORTANT:** The version number must be updated in **THREE** places:
 
-#### 5a. Update `package.json`
+#### 6a. Update `package.json`
 
 ```json
 {
@@ -115,7 +141,7 @@ Review the changes in `package.json` and `package-lock.json` to confirm versions
 }
 ```
 
-#### 5b. Update `README.md`
+#### 6b. Update `README.md`
 
 Find the unpkg.com script tag and update the version in the URL:
 
@@ -123,7 +149,7 @@ Find the unpkg.com script tag and update the version in the URL:
 <script type="module" src="https://unpkg.com/@jessitronica/hny-otel-web@0.X.Y/dist/hny.min.js"></script>
 ```
 
-#### 5c. Update `src/hny.js`
+#### 6c. Update `src/hny.js`
 
 Find the `MY_VERSION` constant near the top of the file:
 
@@ -138,7 +164,7 @@ const MY_VERSION = "0.X.Y";
 
 ---
 
-### 6. Build the Project
+### 7. Build the Project
 
 Build with the updated dependencies:
 
@@ -150,13 +176,13 @@ Check for any build errors or warnings. If esbuild reports issues, investigate b
 
 ---
 
-### 7. Run Full Test Suite
+### 8. Run Full Test Suite
 
 As a task, Follow the complete testing process from [TESTING.md](TESTING.md). The whole thing! Link the user to a query to review the data in Honeycomb.
 
 ---
 
-### 10. Build Distribution Version
+### 9. Build Distribution Version
 
 Once testing passes, build the minified distribution version:
 
@@ -168,7 +194,7 @@ This creates `dist/hny.min.js` for npm distribution.
 
 ---
 
-### 11. Update CHANGELOG (If Code Changed)
+### 10. Update CHANGELOG (If Code Changed)
 
 **Skip this step for dependency-only updates.**
 
@@ -201,34 +227,34 @@ If you made code changes (bug fixes, new features, API changes), update `CHANGEL
 
 ---
 
-### 12. Update README Documentation (If Code Changed)
+### 11. Update README Documentation (If Code Changed)
 
 **Skip this step for dependency-only updates.**
 
 If code changes affect the API or usage:
 
-#### 12a. Update API Examples
+#### 11a. Update API Examples
 
 Review and update code examples in README.md:
 - Verify all example code still works
 - Add examples for new features
 - Update examples that reference changed APIs
 
-#### 12b. Update Configuration Options
+#### 11b. Update Configuration Options
 
 If new configuration options were added to `initializeTracing()`:
 - Document the new options in the "Configuration" section
 - Provide example usage
 - Explain default values and behavior
 
-#### 12c. Update Feature List
+#### 11c. Update Feature List
 
 If new capabilities were added:
 - Update the feature list/overview
 - Add usage examples
 - Document any prerequisites or limitations
 
-#### 12d. Update Browser Compatibility
+#### 11d. Update Browser Compatibility
 
 If minimum browser requirements changed:
 - Update browser compatibility section
@@ -238,7 +264,7 @@ If minimum browser requirements changed:
 
 ---
 
-### 13. Commit Changes
+### 12. Commit Changes
 
 Create a commit with the updates:
 
@@ -258,7 +284,7 @@ git commit -m "Release version 0.X.Y - claude"
 
 ---
 
-### 14. Publish to npm
+### 13. Publish to npm
 
 Publish the new version (requires authentication as `jessitronica`):
 
@@ -273,7 +299,7 @@ npm publish --access public
 
 ---
 
-### 15. Create GitHub Release (Optional)
+### 14. Create GitHub Release (Optional)
 
 Use the release script to create a GitHub release:
 

@@ -25,10 +25,13 @@ This one is very optimized for debugging.
 </script>
 ```
 
-This wrapper follows the [Honeycomb docs](https://docs.honeycomb.io/send-data/javascript-browser/honeycomb-distribution/) as of now.
-(It's November 2024)
+This wrapper follows the [Honeycomb docs](https://docs.honeycomb.io/send-data/javascript-browser/) as of December 2025.
 
-Currently this results in a binary of almost 200k. It isn't even compressed
+**Bundle Size:**
+- Minified (production): ~219 KB
+- Unminified (development): ~543 KB
+
+These sizes are uncompressed. With gzip compression (typically enabled by CDNs and web servers), the actual transfer size is significantly smaller.
 
 ## API Reference
 

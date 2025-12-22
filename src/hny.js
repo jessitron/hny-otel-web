@@ -1,4 +1,4 @@
-import { HoneycombWebSDK } from "@honeycombio/opentelemetry-web";
+import { HoneycombWebSDK, WebVitalsInstrumentation } from "@honeycombio/opentelemetry-web";
 import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations-web";
 import { trace, context } from "@opentelemetry/api";
 import { ATTR_EXCEPTION_MESSAGE, ATTR_EXCEPTION_STACKTRACE, ATTR_EXCEPTION_TYPE } from "@opentelemetry/semantic-conventions";
@@ -32,6 +32,7 @@ function initializeTracing(params /* { apiKey: string, serviceName: string } */)
         "@opentelemetry/instrumentation-fetch": configDefaults,
         "@opentelemetry/instrumentation-document-load": configDefaults,
       }),
+      new WebVitalsInstrumentation(), // Explicitly add Web Vitals as recommended in Honeycomb docs
     ],
     ...params,
   });
