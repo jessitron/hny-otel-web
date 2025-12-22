@@ -39,7 +39,7 @@ After running `futz`, open the served page in a browser and check:
 
 ### Running Local Collector
 To capture traces locally:
-1. Edit `otel-local-config.yaml` and add your Honeycomb API key
+1. Set your Honeycomb API key as an environment variable: `export HONEYCOMB_API_KEY=your_api_key_here`
 2. Start Docker
 3. Run `./run-collector`
 4. Test collector with: `curl -i http://localhost:4318/v1/traces -X POST -H "Content-Type: application/json" -d @test-span.json`
@@ -49,11 +49,6 @@ To check your API key and find your team/environment:
 ```bash
 bash -c 'curl -s -H "X-Honeycomb-Team: $HONEYCOMB_API_KEY" "https://api.honeycomb.io/1/auth"' | jq .
 ```
-Or without piping (avoids zsh variable expansion bug):
-```bash
-curl -s -H "X-Honeycomb-Team: $HONEYCOMB_API_KEY" "https://api.honeycomb.io/1/auth"
-```
-Returns: `{"team": {"slug": "..."}, "environment": {"slug": "..."}, "type": "ingest", ...}`
 
 ### Publishing
 1. Update version in both `package.json` AND `README.md` (version appears in example script tag)

@@ -5,7 +5,7 @@ This guide explains how to test the OpenTelemetry browser tracing functionality 
 ## Prerequisites
 
 1. Docker installed and running
-2. Honeycomb API key set in `otel-local-config.yaml`
+2. Honeycomb API key set as environment variable: `export HONEYCOMB_API_KEY=your_api_key_here`
 3. Local OpenTelemetry collector configured and running
 4. Node.js and npm installed
 
@@ -21,17 +21,6 @@ This starts a Docker container running the OpenTelemetry collector that:
 - Accepts traces on `http://localhost:4318/v1/traces`
 - Forwards traces to Honeycomb
 - Logs traces to stdout (debug exporter)
-
-**Important:** Verify the collector is configured with CORS for the correct port. Check `otel-local-config.yaml` includes:
-```yaml
-receivers:
-  otlp:
-    protocols:
-      http:
-        cors:
-          allowed_origins:
-            - "http://127.0.0.1:8081"
-            - "http://localhost:8081"
 ```
 
 ### 2. Build and Serve the Test Page
