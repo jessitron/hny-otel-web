@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2024-12-21
+
+### Added
+- Explicit WebVitalsInstrumentation to match Honeycomb's recommended initialization pattern
+
+### Changed
+- Updated `@honeycombio/opentelemetry-web` to latest version
+- Updated `@opentelemetry/api` to latest version
+- Updated `@opentelemetry/auto-instrumentations-web` to latest version
+- Improved documentation in UPDATING.md with new verification step for SDK initialization
+
+### Notes
+- Web Vitals were already working via auto-instrumentation, but now explicitly declared for better maintainability and alignment with Honeycomb docs
+
 ## [0.11.0] - TBD
 
 ### Changed
