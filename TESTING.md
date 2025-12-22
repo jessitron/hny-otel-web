@@ -62,9 +62,9 @@ This command:
 
 ### 4. Load the Test Page
 
-Open your browser to:
+The page has to open in the browser, so do that.
 ```
-http://127.0.0.1:8081/
+open http://127.0.0.1:8081/
 ```
 
 The page will automatically:
