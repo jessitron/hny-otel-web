@@ -78,7 +78,6 @@ function initializeTracing(params /* { apiKey: string, serviceName: string } */)
       });
   }
 
-  // TODO: Can i get parcel to import a json file?
   console.log(`Hny-otel-web tracing initialized, ${MY_VERSION} at last update of this message`);
 }
 
@@ -111,11 +110,11 @@ function getTracer(inputTracer) {
   return trace.getTracer(tracerName, tracerVersion);
 }
 
-function inSpan(inputTracer, spanName, fn, context) {
+function inSpan(inputTracerName, spanName, fn, context) {
   if (fn === undefined || typeof fn !== "function") {
     throw new Error("USAGE: inSpan(tracerName, spanName, () => { ... })");
   }
-  return getTracer(inputTracer).startActiveSpan(spanName, {}, context || null, (span) => {
+  return getTracer(inputTracerName).startActiveSpan(spanName, {}, context || null, (span) => {
     try {
       return fn(span);
     } catch (err) {
@@ -188,7 +187,7 @@ function addSpanEvent(message, attributes) {
   span?.addEvent(message, attributes);
 }
 
-function inChildSpan(inputTracer, spanName, spanContext, fn) {
+function inChildSpan(inputTracerName, spanName, spanContext, fn) {
   if (!!spanContext && (!spanContext.spanId || !spanContext.traceId)) {
     console.log("inChildSpan: the third argument should be a spanContext (or undefined to use the active context)");
     fn = spanContext;
@@ -197,7 +196,7 @@ function inChildSpan(inputTracer, spanName, spanContext, fn) {
 
   const usefulContext = !!spanContext ? trace.setSpanContext(context.active(), spanContext) : context.active();
 
-  return inSpan(inputTracer, spanName, fn, usefulContext);
+  return inSpan(inputTracerName, spanName, fn, usefulContext);
 }
 
 /* I'm exporting 'trace' here, but I have a feeling some of the functionality on it is stripped off.
