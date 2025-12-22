@@ -89,3 +89,17 @@ This project uses **esbuild** (not Parcel, despite the README mentioning Parcel 
 - Format: IIFE (Immediately Invoked Function Expression) for browser compatibility
 - Platform: browser
 - Bundle: true (includes all dependencies)
+
+## Shell Environment Gotchas
+
+**zsh environment variable expansion bug**: When using the Bash tool (which actually runs zsh on macOS), environment variables like `$HONEYCOMB_API_KEY` fail to expand in piped commands, even when properly exported.
+
+Example of the problem:
+```bash
+curl -H "X-Honeycomb-Team: $HONEYCOMB_API_KEY" https://api.honeycomb.io/1/auth | jq .  # FAILS - variable is empty
+```
+
+Workarounds:
+- Don't pipe: `curl -H "X-Honeycomb-Team: $HONEYCOMB_API_KEY" https://api.honeycomb.io/1/auth` (works)
+- Use bash explicitly: `bash -c 'curl -H "X-Honeycomb-Team: $HONEYCOMB_API_KEY" https://api.honeycomb.io/1/auth' | jq .` (works)
+- Capture then pipe: `response=$(curl ...); echo "$response" | jq .` (works)
