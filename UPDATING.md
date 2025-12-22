@@ -63,24 +63,21 @@ Pay special attention to:
   - Behavior changes in instrumentation
 
 **Document any expected changes** that may affect users or require code updates.
+Tell the user about them.
 
 ---
 
 ### 4. Update Dependencies
 
-Update dependencies to their latest versions:
-
-```bash
-npm update
-```
-
-Or for specific packages:
+Force update to the latest versions of core dependencies:
 
 ```bash
 npm install @honeycombio/opentelemetry-web@latest @opentelemetry/api@latest @opentelemetry/auto-instrumentations-web@latest
 ```
 
-Review `package.json` to verify versions were updated correctly.
+This ensures we get the absolute latest versions, not just what `npm update` considers acceptable within semver ranges.
+
+Review the changes in `package.json` and `package-lock.json` to confirm versions were updated.
 
 ---
 
@@ -133,72 +130,7 @@ Check for any build errors or warnings. If esbuild reports issues, investigate b
 
 ### 7. Run Full Test Suite
 
-Follow the complete testing process from [TESTING.md](TESTING.md):
-
-#### 7a. Start the Collector
-
-```bash
-export HONEYCOMB_API_KEY=your_api_key_here  # if not already set
-./run-collector
-```
-
-#### 7b. Start Test Server
-
-```bash
-npm run futz
-```
-
-#### 7c. Load Test Page
-
-Open http://127.0.0.1:8081/ in your browser.
-
-#### 7d. Check Collector Logs
-
-```bash
-docker logs <container-id> --tail 50
-```
-
-Verify traces are being captured by the collector.
-
----
-
-### 8. Verify Traces in Honeycomb
-
-Use the verification checklist from [TESTING.md](TESTING.md) to confirm all expected traces are present:
-
-- ✅ Document Load & Auto-Instrumentation
-- ✅ Uncaught Exception "Pirates!!"
-- ✅ Custom Span with Event
-- ✅ Caught Exception with Custom Attribute
-- ✅ Parent-Child Span Relationship
-- ✅ Failed Fetch Request
-- ✅ Debug Mode Test Span
-- ✅ Resource Fetches
-
-**Quick verification query in Honeycomb:**
-
-```
-WHERE service.name = "hny-otel-web-test"
-GROUP BY name
-ORDER BY COUNT DESC
-COUNT
-```
-
-**Expected:** ~20-30 spans per page load including documentLoad, exceptions, custom spans, HTTP requests, and web vitals.
-
----
-
-### 9. Compare with Baseline
-
-Compare the traces with your pre-update smoke test:
-
-- Are all the same span types present?
-- Are there any new spans (possibly from new auto-instrumentations)?
-- Are there any missing spans (possibly due to breaking changes)?
-- Do custom attributes still appear correctly?
-- Are parent-child relationships preserved?
-
-**If anything is broken or missing**, investigate before publishing!
+As a task, Follow the complete testing process from [TESTING.md](TESTING.md). The whole thing! Link the user to a query to review the data in Honeycomb.
 
 ---
 
