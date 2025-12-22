@@ -2,22 +2,30 @@ receivers:
   otlp:
     protocols:
       http:
+        endpoint: "0.0.0.0:4318"
         cors:
           allowed_origins:
+            - "http://127.0.0.1:8080"
+            - "http://localhost:8080"
+          allowed_headers:
             - "*"
+          max_age: 7200
 
 processors:
   batch:
 
 exporters:
   debug:
-    verbosity: basic
+    verbosity: detailed
   otlp:
     endpoint: "api.honeycomb.io:443"
     headers:
       "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
 
 service:
+  telemetry:
+    logs:
+      level: "debug"
   pipelines:
     traces:
       receivers: [otlp]
