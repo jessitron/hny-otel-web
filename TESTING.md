@@ -287,6 +287,48 @@ COUNT
 
 ---
 
+## Sharing Test Results
+
+After running tests, generate a Honeycomb query link to review all test traces:
+
+### Option 1: Use the Quick Verification Query
+
+1. Run the Quick Verification Query above in Honeycomb
+2. Adjust the time range to cover your test run (e.g., "Last 15 minutes")
+3. Click the **Share** button (or copy the URL from your browser)
+4. Share the link for review
+
+### Option 2: Simple Time-Based Query
+
+Create a basic query that shows all traces from your test session:
+
+```
+WHERE service.name = "hny-otel-web-test"
+GROUP BY trace.trace_id
+COUNT
+```
+
+Set the time range to match when you ran the test, then share the link.
+
+### Query Link Best Practices
+
+When sharing query results:
+- **Set a specific time range** (e.g., "Last 15 minutes" or absolute timestamps) so the link shows the same data
+- **Include the environment** in your message (e.g., "local environment")
+- **Note when you ran the test** so reviewers know what timeframe to expect
+- Consider using the **"Last 1 hour"** time range to capture multiple test runs if iterating
+
+**Example message format:**
+```
+Test results for version 0.X.Y:
+- Environment: local
+- Dataset: hny-otel-web-test
+- Time: 2024-01-15 14:30 UTC
+- Query: [All traces from test run](https://ui.honeycomb.io/...)
+```
+
+---
+
 ## Troubleshooting
 
 ### No traces appearing in Honeycomb
